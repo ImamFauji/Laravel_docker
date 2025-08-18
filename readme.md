@@ -22,13 +22,17 @@ Beberapa program yang digunakan adalah:
 1. docker-compose up -d --build
 2. docker-compose up -d
 3. docker-compose up
+
 # untuk seeder :
 1. docker exec app php artisan db:seed --force
+
 # untuk specific seeder (for example CategorySeeder):
 2. docker exec app php artisan db:seed --class=CategorySeeder
+
 # (Optional) Run fresh migration + seed
-If you want to refresh all migrations and then seed:
+# If you want to refresh all migrations and then seed:
 3. docker exec app php artisan migrate:fresh --seed
+
 # untuk config :
 1. docker compose exec app php artisan cache:clear  
 2. docker compose exec app php artisan config:clear  

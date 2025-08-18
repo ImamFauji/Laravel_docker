@@ -48,6 +48,7 @@ echo "Menjalankan optimisasi Laravel..."
 composer validate --strict
 composer install --dev --optimize-autoloader
 
+# Run migrations + seed (ignore errors if already migrated)
 # Migrate database jika ada yang perlu 
 php artisan migrate --force || true
 # Buat symbolic link storage -> public/storage
