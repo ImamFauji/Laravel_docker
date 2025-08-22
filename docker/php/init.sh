@@ -44,9 +44,9 @@ fi
 
 echo "Environment Laravel: $APP_ENV"
 
-echo "Menjalankan optimisasi Laravel..."
+echo "Menjalankan optimisasi Laravelku..."
 composer validate --strict
-composer install --dev --optimize-autoloader
+composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Migrate database jika ada yang perlu 
 php artisan migrate --force || true

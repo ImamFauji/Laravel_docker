@@ -7,17 +7,21 @@ Beberapa program yang digunakan adalah:
 - Laravel Versi 12
 - MySQL 8.0
 
-## Cara Menggunakan
-1. Pastikan anda sudah menginstall docker dan docker-compose di komputer anda.
-2. Download atau clone repository ini.
-3. Buka terminal dan masuk ke direktori tempat anda menyimpan file ini.
-4. Jalankan perintah berikut untuk membangun dan menjalankan container:
+## Cara Install
+1. Masuk ke Repository GitHub : https://github.com/dirumahrafif/laravel-docker.git
+2. Kemudian Download/Clone Repository tersebut di CMD/Gitbash :
+   ```bash
+   git clone https://github.com/dirumahrafif/laravel-docker.git
+   ```
+3. Jika sudah, pastikan anda sudah menginstall docker dan docker-compose di komputer anda.
+5. Buka terminal CMD/Gitbash dan masuk ke direktori tempat anda menyimpan file ini.
+6. Jalankan perintah berikut untuk membangun dan menjalankan container:
    ```bash
    docker-compose up -d
    ```
-5. Setelah container berjalan, buka browser anda dan akses `http://localhost:8000` untuk melihat aplikasi Laravel yang sedang berjalan.
-6. Jangan lupa untuk mengatur file `.env` sesuai dengan kebutuhan anda, terutama bagian database.
- 
+7. Setelah container berjalan, buka browser anda dan akses `http://localhost:8000` untuk melihat aplikasi Laravel yang sedang berjalan.
+8. Jangan lupa untuk mengatur file `.env` sesuai dengan kebutuhan anda, terutama bagian database.
+
 # Command untuk Docker
 1. docker-compose up -d --build
 2. docker-compose up -d
@@ -37,4 +41,13 @@ If you want to refresh all migrations and then seed:
 
 # Remove .Git for unlink author repository (command in diretory project)
 1. rm -rf .git
-2. 
+
+# Daftar Fitur yang sudah ditambahkan
+1. CRUD Barang
+2. CRUD Kategori
+3. Upload Gambar Barang
+4. Search & Filter Barang
+
+# Akun Dummy (Akun yang telah dibuat dari Seeder)
+Email    : admin_elitech14@gmail.com
+Password : admin123
