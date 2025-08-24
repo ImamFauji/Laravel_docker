@@ -3,9 +3,13 @@
 Ini adalah skema docker compose yang bisa digunakan untuk menjalankan laravel. 
 Beberapa program yang digunakan adalah:
 - Apache
-- PHP 8.2
-- Laravel Versi 12
-- MySQL 8.0
+- Versi PHP    : 8.2
+- Backend      : Laravel Versi 12
+- Database     : MySQL 8.0
+- Frontend UI  : Blade + Bootstrap
+- Autentikasi  : Manual auth
+- Hosting      : Localhost
+- CI/CD        : Github
 
 ## Cara Install
 1. Masuk ke Repository GitHub : https://github.com/dirumahrafif/laravel-docker.git
@@ -42,8 +46,27 @@ If you want to refresh all migrations and then seed:
 # Remove .Git for unlink author repository (command in diretory project)
 1. rm -rf .git
 
+===============================================================================
+
+# Struktur Data
+1. Tabel Barang :
+   - id
+   - kode_barang
+   - nama_barang
+   - kategori_id
+   - jumlah_stok
+   - lokasi
+   - tanggal_kategori
+   - gambar (path file laravel storage)
+   - created_at, update_at
+2. Tabel Kategori :
+   - id
+   - nama_kategori
+   - created_at, update_at
+
 # Daftar Fitur yang sudah ditambahkan
-1. CRUD Barang
+1. Login dan Logout
+2. CRUD Barang
 2. CRUD Kategori
 3. Upload Gambar Barang
 4. Search & Filter Barang
@@ -51,3 +74,13 @@ If you want to refresh all migrations and then seed:
 # Akun Dummy (Akun yang telah dibuat dari Seeder)
 Email    : admin_elitech14@gmail.com
 Password : admin123
+
+# Screenshot UI
+1. UI Dashboard         : ![alt text](laravel_app/storage/app/public/UI_Dashboard.png)
+2. UI Barang            : ![alt text](laravel_app/storage/app/public/UI_Barang.png)
+3. UI Edit Barang       : ![alt text](laravel_app/storage/app/public/UI_Edit_Barang.png)
+4. UI Create Barang     : ![alt text](laravel_app/storage/app/public/UI_Create_Barang.png)
+5. UI Kategori          : ![alt text](laravel_app/storage/app/public/UI_Kategori.png)
+6. UI Edit Kategori     : ![alt text](laravel_app/storage/app/public/UI_Edit_Kategori.png)
+7. UI Create Kategori   : ![alt text](laravel_app/storage/app/public/UI_Create_Kategori.png)
+8. UI Login             : ![alt text](laravel_app/storage/app/public/UI_Login.png)
