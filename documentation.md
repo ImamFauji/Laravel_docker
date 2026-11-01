@@ -400,7 +400,7 @@ Jangan memasukkan file `.env` atau password production ke repository publik.
 ## 10. Akun Demo
 
 ```text
-Email    : admin_elitech14@gmail.com
+Email    : imam123@gmail.com
 Password : admin123
 ```
 

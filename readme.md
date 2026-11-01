@@ -65,7 +65,7 @@ Dokumentasi lengkap tersedia di [documentation.md](documentation.md).
 ## Akun Demo
 
 ```text
-Email    : admin_elitech14@gmail.com
+Email    : imam123@gmail.com
 Password : admin123
 ```
 
