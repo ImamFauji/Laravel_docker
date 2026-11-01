@@ -3,49 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\Model_Kategori;
+use App\Repositories\Interfaces\IKategoriRepository;
+use App\Services\Interfaces\IKategoriService;
 use Illuminate\Http\Request;
 
-class KategoriController extends Controller
+class KategoriController
 {
-    public function index() {
-        $kategori = Model_Kategori::latest()->paginate(10);
+    public function __construct(
+        private readonly IKategoriRepository $kategoriRepository,
+        private readonly IKategoriService $kategoriService,
+    ) {
+    }
+
+    public function index()
+    {
+        $kategori = $this->kategoriRepository->paginate();
+
         return view('kategori.index', compact('kategori'));
     }
 
-    public function create() {
+    public function create()
+    {
         return view('kategori.create');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validated = $request->validate([
             'nama_kategori' => 'required|unique:kategori,nama_kategori|max:255',
         ]);
-        Model_Kategori::create($validated);
-        return redirect()->route('kategori.index')->with('success','Kategori dibuat.');
+
+        $this->kategoriService->create($validated);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori dibuat.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Model_Kategori $kategori)
     {
-        //
-    }
-
-    public function edit(Model_Kategori $kategori) {
         return view('kategori.edit', compact('kategori'));
     }
 
-    public function update(Request $request, Model_Kategori $kategori) {
+    public function update(Request $request, Model_Kategori $kategori)
+    {
         $validated = $request->validate([
-            'nama_kategori' => 'required|unique:kategori,nama_kategori,'.$kategori->id.'|max:255',
+            'nama_kategori' => 'required|unique:kategori,nama_kategori,' . $kategori->id . '|max:255',
         ]);
-        $kategori->update($validated);
-        return redirect()->route('kategori.index')->with('success','Kategori diperbarui.');
+
+        $this->kategoriService->update($kategori, $validated);
+
+        return redirect()->route('kategori.index')->with('success', 'Kategori diperbarui.');
     }
 
-    public function destroy(Model_Kategori $kategori) {
-        $kategori->delete();
-        return back()->with('success','Kategori dihapus.');
+    public function destroy(Model_Kategori $kategori)
+    {
+        $this->kategoriService->delete($kategori);
+
+        return back()->with('success', 'Kategori dihapus.');
     }
 }
