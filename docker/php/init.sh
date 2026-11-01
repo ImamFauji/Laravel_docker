@@ -48,8 +48,10 @@ echo "Menjalankan optimisasi Laravelku..."
 composer validate --strict
 composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Migrate database jika ada yang perlu 
+# Migrate database jika ada yang perlu diperbarui
 php artisan migrate --force || true
+# Jalankan seeder jika ada
+php artisan db:seed --force || true
 # Buat symbolic link storage -> public/storage
 php artisan storage:link || true
 
