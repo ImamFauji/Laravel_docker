@@ -20,8 +20,8 @@ sed -i "s/^#* *DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD}/" .env
 
 cat .env | grep DB_
 
-# atur kepemilikan dan hak akses direktori
-chown -R $USER_ID:$GROUP_ID /var/www/html
+# Atur hanya direktori yang menggunakan named volume Docker. Jangan mengubah
+# seluruh bind mount /var/www/html karena itu lambat pada filesystem Windows.
 echo "Mengatur hak akses direktori storage dan bootstrap/cache..."
 # Buat folder dan file log jika belum ada
 mkdir -p /var/www/html/storage/logs
@@ -46,14 +46,41 @@ echo "Environment Laravel: $APP_ENV"
 
 echo "Menjalankan optimisasi Laravelku..."
 composer validate --strict
-composer install --no-interaction --prefer-dist --optimize-autoloader
+if [ ! -f /var/www/html/vendor/autoload.php ]; then
+    echo "Dependency Composer belum tersedia, menjalankan composer install..."
+    composer install --no-interaction --prefer-dist --optimize-autoloader
+else
+    echo "Dependency Composer sudah tersedia, skip composer install."
+fi
 
-# Migrate database jika ada yang perlu diperbarui
-php artisan migrate --force || true
-# Jalankan seeder jika ada
-php artisan db:seed --force || true
+# Tunggu MySQL menerima koneksi sebelum menjalankan migration dan seeder.
+echo "Menunggu MySQL siap..."
+DB_PORT="${DB_PORT:-3306}"
+for attempt in {1..30}; do
+    if : > "/dev/tcp/${DB_HOST}/${DB_PORT}" 2>/dev/null; then
+        break
+    fi
+
+    if [ "$attempt" -eq 30 ]; then
+        echo "MySQL tidak siap setelah 30 percobaan."
+        exit 1
+    fi
+
+    sleep 2
+done
+
+echo "Menjalankan migration..."
+php artisan migrate --force
+
+echo "Menjalankan seeder..."
+php artisan db:seed --force
+echo "Seeder selesai."
 # Buat symbolic link storage -> public/storage
-php artisan storage:link || true
+if [ -L /var/www/html/public/storage ] || [ -d /var/www/html/public/storage ]; then
+    echo "Symbolic link storage sudah tersedia, skip."
+else
+    php artisan storage:link
+fi
 
 # Jalankan perintah artisan sesuai environment
 if [ "$APP_ENV" = "production" ]; then
@@ -67,11 +94,7 @@ if [ "$APP_ENV" = "production" ]; then
     php artisan route:cache
     php artisan view:cache
 else
-    echo "Mode development: membersihkan cache..."
-    php artisan config:clear
-    php artisan cache:clear
-    php artisan view:clear
-    php artisan route:clear
+    echo "Mode development: cache clear dilewati agar startup cepat."
 fi
 
 # Jalankan Apache agar container tetap aktif

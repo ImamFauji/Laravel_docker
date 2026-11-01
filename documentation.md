@@ -270,15 +270,27 @@ cd /mnt/c/Users/LEVINST/Documents/coding-project/Laravel_docker
 code .
 ```
 
-### Opsi 2: performa terbaik dari filesystem WSL
+### Opsi 2: performa terbaik dari filesystem WSL (disarankan)
 
 Filesystem Linux WSL lebih cepat untuk Laravel daripada `/mnt/c`, terutama ketika Composer dan Laravel membaca banyak file PHP.
 
 ```bash
 mkdir -p ~/projects
-cp -r /mnt/c/Users/LEVINST/Documents/coding-project/Laravel_docker ~/projects/
+cd /mnt/c/Users/LEVINST/Documents/coding-project/Laravel_docker
+cp -a ./. ~/projects/Laravel_docker/
 cd ~/projects/Laravel_docker
 code .
+```
+
+Jika muncul `Permission denied` saat menyalin file, gunakan:
+
+```bash
+docker compose down
+sudo mkdir -p ~/projects/Laravel_docker
+sudo cp -a ./. ~/projects/Laravel_docker/
+sudo chown -R "$USER:$USER" ~/projects/Laravel_docker
+chmod -R u+rwX ~/projects/Laravel_docker
+cd ~/projects/Laravel_docker
 ```
 
 Gunakan VS Code yang terhubung ke WSL melalui extension **WSL**. Jalankan semua perintah Docker dari terminal Ubuntu.
@@ -341,12 +353,30 @@ Jika aplikasi baru selesai start, tunggu sampai log menampilkan Apache telah ber
 Apache/... configured -- resuming normal operations
 ```
 
-### 8.4 Jalankan migration dan seeder
+### 8.4 Tunggu migration dan seeder selesai
 
-`init.sh` menjalankan migration ketika container start, tetapi migration dapat terjadi sebelum MySQL benar-benar siap. Karena itu, jalankan perintah berikut setelah container aktif:
+`docker/php/init.sh` otomatis dijalankan sebagai entrypoint container `app`.
+Script tersebut:
+
+1. Menyesuaikan koneksi database pada `.env`.
+2. Menyiapkan permission `storage` dan `bootstrap/cache`.
+3. Memasang dependency Composer hanya jika `vendor/autoload.php` belum tersedia.
+4. Menunggu MySQL menerima koneksi.
+5. Menjalankan `php artisan migrate --force`.
+6. Menjalankan `php artisan db:seed --force`.
+7. Membuat symbolic link storage jika belum tersedia.
+8. Menjalankan Apache.
+
+Pantau sampai log menampilkan `Seeder selesai.` dan Apache telah berjalan:
 
 ```bash
-docker compose exec app php artisan migrate --force
+docker compose logs -f app
+```
+
+Seeder menggunakan `updateOrCreate`, sehingga aman dijalankan ulang tanpa
+menggandakan user dan barang contoh. Jika perlu menjalankannya manual:
+
+```bash
 docker compose exec app php artisan db:seed --force
 ```
 
@@ -470,19 +500,17 @@ File `docker/php/init.sh` dijalankan sebagai entrypoint container aplikasi. Pros
 1. Memastikan source Laravel tersedia.
 2. Menyesuaikan `.env` dengan environment Docker.
 3. Menyiapkan folder storage dan cache.
-4. Memasang dependency Composer.
-5. Menjalankan migration.
-6. Membuat link storage.
-7. Membersihkan cache pada mode development.
-8. Menjalankan Apache foreground.
+4. Memasang dependency Composer hanya jika belum tersedia.
+5. Menunggu MySQL siap.
+6. Menjalankan migration.
+7. Menjalankan seeder idempotent.
+8. Membuat link storage jika belum ada.
+9. Melewati pembersihan cache pada mode development agar startup tidak
+   menggantung pada filesystem Windows.
+10. Menjalankan Apache foreground.
 
-Seeder tidak dijalankan otomatis oleh script. Jalankan secara eksplisit:
-
-```bash
-docker compose exec app php artisan db:seed --force
-```
-
-Hal ini mencegah data contoh dibuat ulang setiap kali container restart.
+Seeder aman dijalankan setiap container start karena user dan barang contoh
+menggunakan `updateOrCreate`. Kategori juga menggunakan pola yang sama.
 
 ## 13. Struktur Database
 
@@ -595,6 +623,10 @@ Jalankan:
 docker compose exec app php artisan migrate --force
 docker compose exec app php artisan db:seed --force
 ```
+
+Perintah tersebut biasanya tidak diperlukan karena migration dan seeder sudah
+dijalankan otomatis oleh `init.sh`. Gunakan jika ingin mengisi ulang database
+setelah container aktif.
 
 ### 15.5 Error koneksi `getaddrinfo for mysql failed`
 

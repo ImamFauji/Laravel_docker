@@ -32,11 +32,17 @@ Dokumentasi lengkap tersedia di [documentation.md](documentation.md).
 
 1. Pastikan Docker Engine berjalan di WSL2.
 2. Buka terminal Ubuntu/WSL.
-3. Masuk ke folder proyek:
+3. Masuk ke folder proyek. Untuk performa terbaik, gunakan filesystem Linux WSL:
 
    ```bash
+   mkdir -p ~/projects
    cd /mnt/c/Users/LEVINST/Documents/coding-project/Laravel_docker
+   cp -a ./. ~/projects/Laravel_docker/
+   cd ~/projects/Laravel_docker
    ```
+
+   Source di `~/projects` lebih cepat daripada `/mnt/c` saat Laravel membaca
+   banyak file PHP.
 
 4. Jalankan aplikasi:
 
@@ -50,10 +56,16 @@ Dokumentasi lengkap tersedia di [documentation.md](documentation.md).
    docker compose ps
    ```
 
-6. Isi database dengan migration dan seeder:
+6. Migration dan seeder dijalankan otomatis oleh `init.sh` ketika container
+   aplikasi mulai. Periksa log untuk memastikan proses selesai:
 
    ```bash
-   docker compose exec app php artisan migrate --force
+   docker compose logs -f app
+   ```
+
+   Seeder aman dijalankan ulang jika diperlukan:
+
+   ```bash
    docker compose exec app php artisan db:seed --force
    ```
 

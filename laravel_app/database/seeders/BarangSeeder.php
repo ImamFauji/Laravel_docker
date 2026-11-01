@@ -10,7 +10,7 @@ class BarangSeeder extends Seeder
     public function run(): void
     {
         // Sample Barang 1
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG001'], [
             'nama' => 'Lenovo ThinkPad X250	',
             'kode_barang' => 'BRG001',
             'kategori_id' => 1, // pastikan kategori dengan ID 1 ada
@@ -20,7 +20,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 2
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG002'], [
             'nama' => 'Monitor Samsung 24 inch',
             'kode_barang' => 'BRG002',
             'kategori_id' => 2, // pastikan kategori dengan ID 2 ada
@@ -30,7 +30,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 3
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG003'], [
             'nama' => 'Monitor AOC 24 inch',
             'kode_barang' => 'BRG003',
             'kategori_id' => 3, // pastikan kategori dengan ID 3 ada
@@ -40,7 +40,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 4
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG004'], [
             'nama' => 'Microsoft Surface Book 2',
             'kode_barang' => 'BRG004',
             'kategori_id' => 4, // pastikan kategori dengan ID 4 ada
@@ -50,7 +50,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 5
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG005'], [
             'nama' => 'Asus Rog GL552V 15.6 inch',
             'kode_barang' => 'BRG005',
             'kategori_id' => 5, // pastikan kategori dengan ID 5 ada
@@ -60,7 +60,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 6
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG006'], [
             'nama' => 'Monitor LG 29WK600 Ultrawide',
             'kode_barang' => 'BRG006',
             'kategori_id' => 6, // pastikan kategori dengan ID 6 ada
@@ -70,7 +70,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 7
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG007'], [
             'nama' => 'Monitor Xiaomi 27 inch',
             'kode_barang' => 'BRG007',
             'kategori_id' => 7, // pastikan kategori dengan ID 7 ada
@@ -80,7 +80,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 8
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG008'], [
             'nama' => 'Mouse Gaming Logitech G102',
             'kode_barang' => 'BRG008',
             'kategori_id' => 8, // pastikan kategori dengan ID 8 ada
@@ -90,7 +90,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 9
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG009'], [
             'nama' => 'Keyboard Gaming Royal Kludge RK68',
             'kode_barang' => 'BRG009',
             'kategori_id' => 9, // pastikan kategori dengan ID 9 ada
@@ -100,7 +100,7 @@ class BarangSeeder extends Seeder
         ]);
 
         // Sample Barang 10
-        Model_Barang::create([
+        Model_Barang::updateOrCreate(['kode_barang' => 'BRG010'], [
             'nama' => 'Headset Steelseries Arctis 7',
             'kode_barang' => 'BRG010',
             'kategori_id' => 10, // pastikan kategori dengan ID 10 ada
