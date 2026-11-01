@@ -13,7 +13,12 @@
             <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-body">
-                        <h4 class="text-center mb-3">Login</h4>
+                        <div class="text-center mb-3">
+                            <h3>Sistem Informasi Manajemen Inventaris</h3>
+                            <img src="https://cdn-icons-png.magnific.com/256/2897/2897785.png?semt=ais_white_label"
+                                alt="Logo" class="img-fluid" style="max-width: 100px;">
+                        </div>
+                        <h4 class="text-center mb-3"><b>Login</b></h4>
                         <form method="POST" action="{{ route('login.process') }}">
                             @csrf
                             <div class="mb-3">
@@ -24,7 +29,8 @@
                                 <label>Password</label>
                                 <input type="password" name="password" class="form-control" required>
                             </div>
-                            @error('email') <div class="alert alert-danger">{{ $message }}</div> @enderror
+                            @error('email')
+                            <div class="alert alert-danger">{{ $message }}</div> @enderror
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
                     </div>
